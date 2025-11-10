@@ -4,20 +4,20 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-// size of the data buffers for pooling
-extern const int buffer_size;
+// Size of each data buffer
+#define BUFFER_SIZE 12
 
-// data arrays for each channel of size buffer_size
-extern int dataA0[];
-extern int dataA1[];
-extern int dataA2[];
-extern int dataA3[];
+// data arrays for each channel of size buffer_size. double buffering with first index
+extern int dataA0[2][BUFFER_SIZE];
+extern int dataA1[2][BUFFER_SIZE];
+extern int dataA2[2][BUFFER_SIZE];
+extern int dataA3[2][BUFFER_SIZE];
 
 extern int data_index; // next index to store sample
 extern int channel_index; // current channel sampling (0, 1, 2 or 3)
-
-// indicates when the arrays are full and ready to send
-extern bool full_flag;
+extern int writing_bufer; // current buffer being written to (0 or 1)
+extern int reading_buffer; // current buffer being written to (0 or 1)
+extern bool ready_flag; // indicates when the arrays are full and ready to send
 
 // self explanatory
 void adc_and_timer_setup();

@@ -1,20 +1,26 @@
 #include "sampling.hpp"
+#include "Arduino.h"
+#include "pins_arduino.h"
 #include <avr/io.h>
 
-const int buffer_size = 100;
-
-int dataA0[buffer_size];
-int dataA1[buffer_size];
-int dataA2[buffer_size];
-int dataA3[buffer_size];
+int dataA0[2][BUFFER_SIZE];
+int dataA1[2][BUFFER_SIZE];
+int dataA2[2][BUFFER_SIZE];
+int dataA3[2][BUFFER_SIZE];
 
 int data_index = 0;
 int channel_index = 0;
-
-bool full_flag = false;
+int writing_bufer = 0;
+int reading_buffer = 1;
+bool ready_flag = false;
 
 void adc_and_timer_setup()
 {
+    pinMode(A0, INPUT);
+    pinMode(A1, INPUT);
+    pinMode(A2, INPUT);
+    pinMode(A3, INPUT);
+
     // -------- ADC Setup ------------
     ADMUX = 0x00; // sets right adjust and pin A0
     ADMUX |= 0x40; // sets VREF to AVcc
@@ -48,8 +54,6 @@ void adc_and_timer_enable()
 
 ISR(ADC_vect)
 {
-    if (full_flag) return;
-
     int sample;
 
     sample = ADCL;
@@ -59,16 +63,16 @@ ISR(ADC_vect)
     switch (channel_index)
     {
         case 0:
-        dataA0[data_index] = sample;
+        dataA0[writing_bufer][data_index] = sample;
         break;
         case 1:
-        dataA1[data_index] = sample;
+        dataA1[writing_bufer][data_index] = sample;
         break;
         case 2:
-        dataA2[data_index] = sample;
+        dataA2[writing_bufer][data_index] = sample;
         break;
         case 3:
-        dataA3[data_index] = sample;
+        dataA3[writing_bufer][data_index] = sample;
         break;
     }
 
@@ -80,11 +84,17 @@ ISR(ADC_vect)
     ADMUX &= 0xF0;
     ADMUX |= channel_index;
 
-    if (data_index == buffer_size)
+    if (data_index == BUFFER_SIZE)
     {
-        full_flag = true;
+        if (ready_flag) // the serial hasnt finished, stops interrupts
+        {
+            noInterrupts();
+            digitalWrite(LED_BUILTIN, HIGH);
+        }
+        ready_flag = true;
         data_index = 0;
         channel_index = 0;
+        writing_bufer = (writing_bufer + 1)%2;
     }
 }
 

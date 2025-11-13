@@ -3,16 +3,16 @@
 #include "pins_arduino.h"
 #include <avr/io.h>
 
-int dataA0[2][BUFFER_SIZE];
-int dataA1[2][BUFFER_SIZE];
-int dataA2[2][BUFFER_SIZE];
-int dataA3[2][BUFFER_SIZE];
+volatile int dataA0[2][BUFFER_SIZE];
+volatile int dataA1[2][BUFFER_SIZE];
+volatile int dataA2[2][BUFFER_SIZE];
+volatile int dataA3[2][BUFFER_SIZE];
 
 int data_index = 0;
 int channel_index = 0;
-int writing_bufer = 0;
-int reading_buffer = 1;
-bool ready_flag = false;
+volatile int writing_bufer = 0;
+volatile int reading_buffer = 1;
+volatile bool ready_flag = false;
 
 void adc_and_timer_setup()
 {
@@ -40,8 +40,8 @@ void adc_and_timer_setup()
     TCCR0B = 0x00; // no clock source -> timer disabled
     TCNT0 = 0; // counter set to 0
 
-    OCR0A = 134; // interrupt frequency = 2MHz/135 = 14,8kHz -> 3,7 kHz / channel
-    TIMSK0 = 0x02; // enables compare a interrupts
+    OCR0A = 99; // interrupt frequency = 250kHz/100 = 2.5kHz -> 625Hz / channel
+    TIMSK0 = 0x03; // enables compare a interrupts
 }
 
 void adc_and_timer_enable()
@@ -49,7 +49,7 @@ void adc_and_timer_enable()
     // ------ Conversion Start -------
     SREG |= 0x80; // enables interrupts
     ADCSRA |= 0x80; // enables the ADC
-    TCCR0B = 0x02; // enables timer with prescaler set to clk/8 = 2MHz
+    TCCR0B = 0x03; // enables timer with prescaler set to clk/64 = 250kHz
 }
 
 ISR(ADC_vect)
@@ -86,15 +86,17 @@ ISR(ADC_vect)
 
     if (data_index == BUFFER_SIZE)
     {
-        if (ready_flag) // the serial hasnt finished, stops interrupts
+        if (ready_flag) // the serial hasnt finished
         {
-            noInterrupts();
             digitalWrite(LED_BUILTIN, HIGH);
         }
+
+        noInterrupts();
         ready_flag = true;
         data_index = 0;
         channel_index = 0;
         writing_bufer = (writing_bufer + 1)%2;
+        interrupts();
     }
 }
 

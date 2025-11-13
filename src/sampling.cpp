@@ -40,8 +40,8 @@ void adc_and_timer_setup()
     TCCR0B = 0x00; // no clock source -> timer disabled
     TCNT0 = 0; // counter set to 0
 
-    OCR0A = 99; // interrupt frequency = 250kHz/100 = 2.5kHz -> 625Hz / channel
-    TIMSK0 = 0x03; // enables compare a interrupts
+    OCR0A = 49; // interrupt frequency = 250kHz/100 = 2.5kHz -> 625Hz / channel
+    TIMSK0 = 0x02; // enables compare a interrupts
 }
 
 void adc_and_timer_enable()
@@ -91,12 +91,11 @@ ISR(ADC_vect)
             digitalWrite(LED_BUILTIN, HIGH);
         }
 
-        noInterrupts();
         ready_flag = true;
         data_index = 0;
         channel_index = 0;
+        reading_buffer = writing_bufer;
         writing_bufer = (writing_bufer + 1)%2;
-        interrupts();
     }
 }
 

@@ -2,10 +2,11 @@
 #include <avr/common.h>
 #include <avr/io.h>
 
+#include "HardwareSerial.h"
 #include "sampling.hpp"
 
 void setup() {
-  Serial.begin(460800);
+  Serial.begin(921600);
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);

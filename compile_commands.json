@@ -156,6 +156,12 @@
         "output": ".pio/build/uno/src/main.cpp.o"
     },
     {
+        "command": "/home/theofc/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/uno/src/processing.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60118 -DARDUINO_AVR_UNO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Iinclude -Isrc -I/home/theofc/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/theofc/.platformio/packages/framework-arduino-avr/variants/standard src/processing.cpp",
+        "directory": "/home/theofc/Documents/UFMG/Lab Medi\u00e7\u00e3o/digitalizacao_lab_med",
+        "file": "src/processing.cpp",
+        "output": ".pio/build/uno/src/processing.cpp.o"
+    },
+    {
         "command": "/home/theofc/.platformio/packages/toolchain-atmelavr/bin/avr-g++ -o .pio/build/uno/src/sampling.cpp.o -c -fno-exceptions -fno-threadsafe-statics -fpermissive -std=gnu++11 -mmcu=atmega328p -Os -Wall -ffunction-sections -fdata-sections -flto -DPLATFORMIO=60118 -DARDUINO_AVR_UNO -DF_CPU=16000000L -DARDUINO_ARCH_AVR -DARDUINO=10808 -Iinclude -Isrc -I/home/theofc/.platformio/packages/framework-arduino-avr/cores/arduino -I/home/theofc/.platformio/packages/framework-arduino-avr/variants/standard src/sampling.cpp",
         "directory": "/home/theofc/Documents/UFMG/Lab Medi\u00e7\u00e3o/digitalizacao_lab_med",
         "file": "src/sampling.cpp",

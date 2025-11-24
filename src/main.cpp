@@ -2,12 +2,14 @@
 #include <avr/common.h>
 #include <avr/io.h>
 
+#include "HardwareSerial.h"
 #include "sampling.hpp"
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(921600);
 
   pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 
   adc_and_timer_setup();
   adc_and_timer_enable();
@@ -24,6 +26,8 @@ void loop() {
             Serial.print(dataA3[reading_buffer][i]); Serial.print("\n");
         }
 
+        noInterrupts();
         ready_flag = false;
+        interrupts();
     }
 }

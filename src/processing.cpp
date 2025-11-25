@@ -2,10 +2,12 @@
 
 #include <Arduino.h>
 
+extern const double adc_resolution = 5.0/1023; // FSR/(2^n - 1)
+extern const double current_gain = 1.35*8.0*3.625; // Rs * AmpIso * AmpOps
+extern const double voltage_gain = 127.0/6.0; // 6 rms transformer gain
+
 void process_and_print_rms(int* voltage_data, int* current_data, int buffer_size)
 {
-    const double resolution = 5.0/1023;
-
     // RMS Values
     double current_rms = 0.0;
     double voltage_rms = 0.0;
@@ -16,11 +18,11 @@ void process_and_print_rms(int* voltage_data, int* current_data, int buffer_size
         voltage_rms += voltage_data[i]*voltage_data[i];
     }
 
-    current_rms = sqrt(resolution*current_rms/buffer_size);
-    voltage_rms = sqrt(resolution*voltage_rms/buffer_size);
+    current_rms = sqrt(current_rms/buffer_size)*adc_resolution/current_gain;
+    voltage_rms = sqrt(voltage_rms/buffer_size)*adc_resolution/voltage_gain;
 
     // Active power
-
+    double active_power = 0.0;
 }
 
 void process_and_print_waves(int* voltage_data, int* current_data, int* ilum_data, int* temp_data, int buffer_size)

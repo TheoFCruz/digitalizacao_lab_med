@@ -5,7 +5,10 @@
 #include <avr/io.h>
 
 // Size of each data buffer
-#define BUFFER_SIZE 100
+#define BUFFER_SIZE 90
+
+// sampling frequency
+#define SAMP_FREQ 1200
 
 // data arrays for each channel of size buffer_size. double buffering with first index
 extern volatile int dataA0[2][BUFFER_SIZE];

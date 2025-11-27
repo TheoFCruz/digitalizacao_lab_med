@@ -1,6 +1,6 @@
 #include "sampling.hpp"
-#include "Arduino.h"
-#include "pins_arduino.h"
+
+#include <Arduino.h>
 #include <avr/io.h>
 
 volatile int dataA0[2][BUFFER_SIZE];
@@ -40,7 +40,7 @@ void adc_and_timer_setup()
     TCCR0B = 0x00; // no clock source -> timer disabled
     TCNT0 = 0; // counter set to 0
 
-    OCR0A = 49; // interrupt frequency = 250kHz/100 = 2.5kHz -> 625Hz / channel
+    OCR0A = 250e3/(SAMP_FREQ*4) - 1; // interrupt frequency = 250kHz/50 = 5kHz -> 1.25kHz / channel
     TIMSK0 = 0x02; // enables compare a interrupts
 }
 

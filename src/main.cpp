@@ -2,8 +2,11 @@
 #include <avr/common.h>
 #include <avr/io.h>
 
-#include "HardwareSerial.h"
+#include "pins_arduino.h"
+#include "processing.hpp"
 #include "sampling.hpp"
+
+#define RESET_LED_PIN 9
 
 void setup() {
   Serial.begin(921600);
@@ -11,19 +14,33 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
+  pinMode(FLAG_PIN, INPUT);
+  pinMode(RESET_LED_PIN, INPUT);
+
   adc_and_timer_setup();
   adc_and_timer_enable();
 }
 
 void loop() {
+    if (digitalRead(RESET_LED_PIN)) digitalWrite(LED_BUILTIN, LOW);
+
     if (ready_flag)
     {
-        for (int i = 0; i < BUFFER_SIZE; i++)
+        if (digitalRead(FLAG_PIN))
         {
-            Serial.print(dataA0[reading_buffer][i]); Serial.print("\t");
-            Serial.print(dataA1[reading_buffer][i]); Serial.print("\t");
-            Serial.print(dataA2[reading_buffer][i]); Serial.print("\t");
-            Serial.print(dataA3[reading_buffer][i]); Serial.print("\n");
+            process_and_print_rms(
+                dataA0[reading_buffer],
+                dataA1[reading_buffer],
+                BUFFER_SIZE);
+        }
+        else
+        {
+            process_and_print_waves(
+                dataA0[reading_buffer],
+                dataA1[reading_buffer],
+                dataA2[reading_buffer],
+                dataA3[reading_buffer],
+                BUFFER_SIZE);
         }
 
         noInterrupts();

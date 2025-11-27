@@ -92,8 +92,8 @@ void process_and_print_waves(
         char str_bfr[24];
         char v_buf[6], i_buf[6], il_buf[6], t_buf[6];
 
-        dtostrf(voltage_value, 4, 0, v_buf);
-        dtostrf(current_value*1000, 4, 0, i_buf);
+        dtostrf(voltage_value, 4, 1, v_buf);
+        dtostrf(current_value*1000, 4, 1, i_buf);
         dtostrf(ilum_value, 4, 1, il_buf);
         dtostrf(temp_value, 4, 1, t_buf);
 

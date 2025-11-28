@@ -6,15 +6,16 @@
 #include "processing.hpp"
 #include "sampling.hpp"
 
-#define RESET_LED_PIN 9
+#define RESET_LED_PIN 10
 
 void setup() {
-  Serial.begin(921600);
+  Serial.begin(115200);
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
-  pinMode(FLAG_PIN, INPUT);
+  pinMode(MODE_PIN, INPUT);
+  pinMode(WAVES_PIN, INPUT);
   pinMode(RESET_LED_PIN, INPUT);
 
   adc_and_timer_setup();
@@ -26,7 +27,7 @@ void loop() {
 
     if (ready_flag)
     {
-        if (digitalRead(FLAG_PIN))
+        if (digitalRead(MODE_PIN))
         {
             process_and_print_rms(
                 dataA0[reading_buffer],

@@ -9,7 +9,7 @@
 #define RESET_LED_PIN 10
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(921600);
 
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);

@@ -94,8 +94,8 @@ void process_and_print_waves(
 
         dtostrf(voltage_value, 4, 1, v_buf);
         dtostrf(current_value*1000, 4, 1, i_buf);
-        dtostrf(ilum_value, 4, 1, il_buf);
-        dtostrf(temp_value, 4, 1, t_buf);
+        dtostrf(ilum_value, 4, 3, il_buf);
+        dtostrf(temp_value, 4, 3, t_buf);
 
         // snprintf(str_bfr, sizeof(str_bfr),
         //     "%s\t%s\t%s\t%s\n",

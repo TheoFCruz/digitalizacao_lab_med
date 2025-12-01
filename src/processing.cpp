@@ -101,9 +101,18 @@ void process_and_print_waves(
         //     "%s\t%s\t%s\t%s\n",
         //     v_buf, i_buf, il_buf, t_buf);
 
-        snprintf(str_bfr, sizeof(str_bfr),
-            "%s\t%s\n",
-            v_buf, i_buf);
+        if (digitalRead(WAVES_PIN))
+        {
+            snprintf(str_bfr, sizeof(str_bfr),
+                "%s\t%s\n",
+                v_buf, i_buf);
+        }
+        else
+        {
+            snprintf(str_bfr, sizeof(str_bfr),
+                "%s\t%s\n",
+                il_buf, t_buf);
+        }
 
         Serial.print(str_bfr);
     }

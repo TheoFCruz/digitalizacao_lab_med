@@ -1,7 +1,8 @@
 #ifndef processing
 #define processing
 
-#define FLAG_PIN 8 // pin that defines which information is printed
+#define MODE_PIN 8 // pin that defines whether waves os rms values are printed. waves -> 0, rms -> 1
+#define WAVES_PIN 9 // pin that defines which two waves are printed
 
 // contants for the calculations
 extern const float adc_resolution; // voltage relative to the LSB

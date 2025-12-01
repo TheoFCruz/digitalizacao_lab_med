@@ -62,18 +62,10 @@ ISR(ADC_vect)
     // stores sample
     switch (channel_index)
     {
-        case 0:
-        dataA0[writing_bufer][data_index] = sample;
-        break;
-        case 1:
-        dataA1[writing_bufer][data_index] = sample;
-        break;
-        case 2:
-        dataA2[writing_bufer][data_index] = sample;
-        break;
-        case 3:
-        dataA3[writing_bufer][data_index] = sample;
-        break;
+        case 0: dataA0[writing_bufer][data_index] = sample; break;
+        case 1: dataA1[writing_bufer][data_index] = sample; break;
+        case 2: dataA2[writing_bufer][data_index] = sample; break;
+        case 3: dataA3[writing_bufer][data_index] = sample; break;
     }
 
     // updates data index

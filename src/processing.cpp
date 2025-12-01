@@ -65,8 +65,8 @@ void process_and_print_rms(
     Serial.print(" W\n");
 
     Serial.print("E: ");
-    Serial.print(energy);
-    Serial.print(" J\n\n");
+    Serial.print(energy/3.6);
+    Serial.print(" mWh\n\n");
 }
 
 void process_and_print_waves(
